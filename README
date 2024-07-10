@@ -1,0 +1,648 @@
+=====================================================================================
+=                   Programming Assignment  README file                        = 
+=====================================================================================
+                    1. Personnel information
+
+- perlasy@mail.uc.edu:  M15791271 -  Sai Charan Reddy Perla
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    2. File list 
+
+  - buffer_mgr.c
+  - buffer_mgr.h
+  - buffer_mgr_stat.c
+  - buffer_mgr_stat.h
+  - dberror.c
+  - dberror.h
+  - dt.h
+  - Makefile
+  - README
+  - storage_mgr.c
+  - storage_mgr.h
+  - record_mgr.c
+  - record_mgr.h
+  - btree_mgr.h
+  - btree_mgr.c
+  - tables.h
+  - rm_serializer.c
+  - test_assign4_1.c
+  - test_helper.h
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    3. Installation instruction 
+  Using test_assign4_1.c test:
+ $ make
+ $ ./test_assign4
+ 
+
+  After test, use clean to delete files except source code.
+    $ make clean
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    4. Function descriptions: of  functions 
+
+
+Manipulating page files 
+
+1. initStorageManager
+   Initializes the Storage Manager.
+   This function serves as an entry point for users to engage with the Storage Manager,
+   indicating that the initialization process has started and displaying the version information.
+ 
+2.createPageFile
+/**
+ * Initializes a new page file named as specified.
+ * This function creates a file, setting its size to equal one page. It ensures the page is filled with null ('\0') bytes,
+ * effectively preparing a blank page for use.
+ * 
+ * @param fileName Pointer to a character array containing the name of the file to create.
+ * @return A status code indicating the success or failure of the file creation process.
+ */
+
+
+
+
+3.openPageFile
+/**
+ * Opens a page file if it exists and prepares the file handle with the file's specifics.
+ * This function checks for the existence of a specified file by name, opens it for reading, and updates a provided file handle structure
+ * with details such as the file's name, its total number of pages, and sets the current page position to the beginning.
+ *
+ * @param fileName Pointer to the name of the file to open.
+ * @param fHandle Pointer to the file handle structure to populate with file details.
+ * @return A result code indicating the success or failure of the file opening process.
+ */
+
+4.closePageFile
+/**
+ * Closes the page file that is currently open and resets the attributes of the file handle.
+ * This function ensures that any open file associated with the file handle is properly closed,
+ * and then it resets the file handle's details to indicate that no file is currently open.
+ *
+ * @param fHandle Pointer to the file handle structure to be reset.
+ * @return A status code reflecting the outcome of the close operation.
+ */
+
+5.destroyPageFile
+/**
+ * Removes a page file from the filesystem.
+ * This function attempts to delete a file specified by its name. If successful, the file is removed,
+ * freeing up space and removing the file's data from the system. It is designed to handle the file deletion
+ * process securely and efficiently, ensuring that the specified file no longer exists in the storage.
+ *
+ * @param fileName The name of the file to be deleted.
+ * @return A result code indicating whether the file was successfully deleted or if an error occurred.
+ */
+
+ Reading blocks from disc 
+6.readBlock
+/**
+ * Reads the specified block from a file into a memory page.
+ * This function targets a specific block in the file, determined by the page number, and reads its contents into a memory buffer (memPage).
+ * It ensures that the read operation is accurately performed on the correct block and updates the file handle's current page position.
+ *
+ * @param pageNum The page number of the block to read.
+ * @param fHandle Pointer to the file handle associated with the file.
+ * @param memPage Buffer where the block's data will be stored.
+ * @return A status code indicating the outcome of the read operation.
+ */
+
+7.getBlockPos
+/**
+ * Retrieves the current block position within the file.
+ * This function provides the current position of the block being read or written in the file, as indicated by the file handle.
+ * It is useful for determining where in the file the next read or write operation will occur, or simply for tracking the progress of file manipulation.
+ *
+ * @param fHandle Pointer to the file handle structure from which to retrieve the current block position.
+ * @return The current block position as an integer.
+ */
+
+
+
+8.readFirstBlock
+/**
+ * Reads the first block from the specified file.
+ * This function is designed to access the beginning of a file, reading its first block and storing the contents into a provided buffer (memPage).
+ * It's particularly useful for starting sequential reads or when the initial data of the file is required for processing.
+ *
+ * @param fHandle Handle to the file from which the first block will be read.
+ * @param memPage Buffer where the contents of the first block will be stored.
+ * @return A status code indicating the success or failure of the read operation.
+ */
+
+9.readPreviousBlock
+/**
+ * Reads the block immediately before the current block in the file.
+ * This function seeks to the block preceding the current position indicated by fHandle and reads its contents into the specified buffer (memPage).
+ * It's useful for operations that require processing or examining data in reverse order within the file.
+ *
+ * @param fHandle Handle to the file from which the previous block will be read.
+ * @param memPage Buffer where the contents of the previous block will be stored.
+ * @return A status code indicating the outcome of attempting to read the previous block.
+ */
+
+
+10.readCurrentBlock
+/**
+ * Reads the block at the file's current position.
+ * This function accesses the file at the position currently marked by the file handle (fHandle) and reads the block found there into a buffer (memPage).
+ * It is suitable for sequential access patterns or when the application logic requires processing of data from the current position without changing it.
+ *
+ * @param fHandle Handle to the file from which the current block will be read.
+ * @param memPage Buffer where the contents of the current block will be stored.
+ * @return A status code reflecting the success or failure of the operation.
+ */
+
+11.readNextBlock
+/**
+ * Reads the block immediately after the current block in the file.
+ * This function moves to the next block from the current position, reads its content, and stores it in the provided buffer (memPage).
+ * It's ideal for sequential processing of a file's contents or when the next piece of data is required for the application's logic.
+ *
+ * @param fHandle Handle to the file from which the next block will be read.
+ * @param memPage Buffer where the contents of the next block will be stored.
+ * @return A return code indicating the success or failure of the read operation.
+ */
+
+
+12.readLastBlock
+/**
+ * Reads the last block of the specified file into the given memory page.
+ * This function seeks to the end of the file, identifies the last block based on the file's size and the defined page size,
+ * and reads this block into the memory buffer provided. It is useful for applications that need to access the final part of the file's data,
+ * whether for processing file footers or for other reasons.
+ *
+ * @param fHandle Handle to the file from which the last block will be read.
+ * @param memPage Buffer where the contents of the last block will be stored.
+ * @return A status code indicating the success or failure of the operation.
+ */
+
+
+ Writing blocks to a page file
+13.writeBlock
+
+
+/**
+ * Writes the data from a memory page to a specified page in the file.
+ * This function allows for data stored in a memory buffer (memPage) to be written to a specific page number (pageNum) within a file.
+ * It supports writing data at both absolute positions determined by pageNum and the current position within the file, as indicated by the file handle (fHandle).
+ * The function ensures data is accurately and efficiently written to the correct location in the file.
+ *
+ * @param pageNum Page number in the file where the data should be written.
+ * @param fHandle Pointer to the file handle structure representing the open file.
+ * @param memPage Memory page containing the data to be written.
+ * @return A return code indicating the outcome of the write operation.
+ */
+
+
+
+14.writeCurrentBlock
+/**
+ * Writes data to the current block of the file.
+ * This function writes the contents of a memory page to the block at the current position within the file, as tracked by the file handle.
+ * It provides a convenient way to update data in the file without needing to specify the page number explicitly, using the file's current position as the target for the write operation.
+ *
+ * @param fHandle Pointer to the file handle structure for the open file.
+ * @param memPage Memory page containing the data to be written.
+ * @return A return code indicating the success of the write operation or an error.
+ */
+
+15.appendEmptyBlock
+/**
+ * Appends an empty block to the end of the file.
+ * This function increases the file's size by adding a new page at the end, initializing this page with zero bytes to ensure it's empty.
+ * It's useful for expanding the file in preparation for additional data without altering existing content.
+ *
+ * @param fHandle Pointer to the file handle structure for the file to be expanded.
+ * @return A return code indicating whether the new page was successfully added or if an error occurred.
+ */
+
+16.ensureCapacity
+/**
+ * Ensures the file has a minimum number of pages.
+ * If the file associated with the given file handle has fewer pages than specified by numberOfPages, this function will increase the file's size
+ * until it meets or exceeds the specified number of pages. This is achieved by appending empty pages filled with zero bytes to the file as needed.
+ *
+ * @param numberOfPages The minimum number of pages the file should contain.
+ * @param fHandle Pointer to the file handle structure for the file to be modified.
+ * @return A return code indicating the success of the operation or an error.
+ */
+
+
+// Buffer Manager Interface Pool Handling
+
+// initBufferPool
+/**
+ * Initializes the Storage Manager by creating a new buffer pool with numPages page frames using the specified page replacement strategy. This buffer pool is utilized to cache pages from the existing page file named pageFileName. Initially, all page frames are empty. The page file must already exist; this function does not generate a new page file. Additional parameters, stratData, can be utilized to pass parameters for specific page replacement strategies, such as k for LRU-k.
+ * @param bm Pointer to the buffer pool structure to be initialized.
+ * @param pageFileName Name of the existing page file from which pages will be cached.
+ * @param numPages Number of page frames in the buffer pool.
+ * @param strategy Strategy for page replacement (e.g., FIFO, LRU).
+ * @param stratData Additional parameters for the page replacement strategy, if applicable.
+ * @return Return code indicating success or failure of the initialization process.
+ */
+
+// shutdownBufferPool
+/**
+ * Destroys a buffer pool, freeing up all associated resources. This method should release all memory allocated for page frames and ensure that any dirty pages are written back to disk before the pool is destroyed. Attempting to shut down a buffer pool with pinned pages will result in an error.
+ * @param bm Pointer to the buffer pool to be shutdown.
+ * @return Return code indicating success or failure of the shutdown process.
+ */
+
+// forceFlushPool
+/**
+ * Forces all dirty pages (pages with fix count 0) from the buffer pool to be written to disk.
+ * @param bm Pointer to the buffer pool.
+ * @return Return code indicating success or failure of the force flush operation.
+ */
+
+// Buffer Manager Interface Access Pages
+
+// markDirty
+/**
+ * Marks a page in the buffer pool as dirty, indicating that it has been modified.
+ * @param bm Pointer to the buffer pool.
+ * @param page Pointer to the page handle structure representing the page to be marked as dirty.
+ * @return Return code indicating success or failure of the operation.
+ */
+
+// unpinPage
+/**
+ * Unpins a page indicated by the BM_PageHandle structure.
+ * @param bm Pointer to the buffer pool.
+ * @param page Pointer to the page handle structure representing the page to be unpinned.
+ * @return Return code indicating success or failure of the operation.
+ */
+
+// forcePage
+/**
+ * Writes the current content of the page back to the page file on disk.
+ * @param bm Pointer to the buffer pool.
+ * @param page Pointer to the page handle structure representing the page to be written back to disk.
+ * @return Return code indicating success or failure of the operation.
+ */
+
+// pinPage
+/**
+ * Pins a page in memory. If the page is not already in memory, it is read from the file.
+ * @param bm Pointer to the buffer pool.
+ * @param page Pointer to the page handle structure representing the page to be pinned.
+ * @param pageNum The page number of the page to be pinned.
+ * @return Return code indicating success or failure of the operation.
+ */
+
+// Statistics Interface
+
+// getFrameContents
+/**
+ * Returns an array of PageNumbers where the ith element is the number of the page stored in the ith page frame.
+ * @param bm Pointer to the buffer pool.
+ * @return An array of PageNumbers representing the page numbers stored in each page frame.
+ */
+
+// getDirtyFlags
+/**
+ * Returns an array of bools where the ith element is TRUE if the page stored in the ith page frame is dirty.
+ * @param bm Pointer to the buffer pool.
+ * @return An array of boolean values indicating whether each page stored in the page frames is dirty.
+ */
+
+// getFixCounts
+/**
+ * Returns an array of ints where the ith element is the fix count of the page stored in the ith page frame.
+ * @param bm Pointer to the buffer pool.
+ * @return An array of integers representing the fix counts of pages stored in each page frame.
+ */
+
+// getNumReadIO
+/**
+ * Returns the number of read I/O operations performed by the buffer pool.
+ * @param bm Pointer to the buffer pool.
+ * @return The number of read I/O operations.
+ */
+
+// getNumWriteIO
+/**
+ * Returns the number of write I/O operations performed by the buffer pool.
+ * @param bm Pointer to the buffer pool.
+ * @return The number of write I/O operations.
+ */
+
+// strategyFIFOandLRU
+/**
+ * Determines which frame to use to save data using the First-In-First-Out (FIFO) strategy.
+ * @param bm Pointer to the buffer pool.
+ * @return The index of the frame chosen by the FIFO strategy.
+ */
+
+// getAttributionArray
+/**
+ * Returns an array that includes all page strategy attributes.
+ * @param bm Pointer to the buffer pool.
+ * @return Pointer to an array containing the strategy attributes of all pages.
+ */
+
+
+
+// table and manager
+
+//initRecordManager
+/**
+ * Function to initialize the record manager.
+ * @param mgmtData A pointer to additional manager-specific data (not used in this implementation).
+ * @return RC_OK on success, or an error code otherwise.
+ */
+
+//shutdownRecordManager
+/**
+ * Function to shutdown the record manager and release any resources.
+ * @return RC_OK on success, or an error code otherwise.
+ */
+
+//createTable
+/**
+ * Creates a table by initializing the underlying page file and storing metadata such as the schema, free space information, etc., in the Table Information pages.
+ * This function sets up a new table with its schema defined and handles the organization of data within the system's storage by establishing a base page file structure.
+ *
+ * @param name Pointer to the name of the table to be created.
+ * @param schema Pointer to the schema structure defining table layout and types.
+ * @return RC Result code representing success or failure of table creation.
+ */
+
+//openTable
+/**
+ * Opens a table for manipulation.
+ * This function is responsible for preparing the table for data operations by opening the associated page file and setting up necessary metadata.
+ *
+ * @param rel Pointer to the RM_TableData structure to be initialized.
+ * @param name Pointer to the name of the table to open.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+//closeTable
+
+/**
+ * Closes a table after manipulation.
+ * This function is responsible for finalizing operations on the table and releasing associated resources.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table to close.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+
+//deleteTable
+
+/**
+ * Function to delete a table and its associated data.
+ * @param name The name of the table to be deleted.
+ * @return RC_OK on success, or an error code otherwise.
+ */
+
+
+//getNumTuples
+
+/**
+ * Function to get the number of tuples (records) in the specified table.
+ * @param rel The table handle.
+ * @return The number of tuples in the table, or an error code otherwise.
+ */
+
+
+// handling records in a table
+
+//insertRecord 
+/**
+ * Inserts a record into the specified table.
+ * This function adds a new record to the table, incorporating it into the existing data set.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table.
+ * @param record Pointer to the Record structure containing the data to insert.
+ * @return RC Result code indicating the success or failure of the insertion operation.
+ */
+
+//deleteRecord
+/**
+ * Deletes a record from the specified table by its ID.
+ * This function removes the record identified by the given ID from the table.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table.
+ * @param id The ID of the record to delete.
+ * @return RC Result code indicating the success or failure of the deletion operation.
+ */
+
+//updateRecord 
+
+/**
+ * Updates a record in the specified table based on its ID.
+ * This function modifies the data of the record identified by its ID in the table.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table.
+ * @param record Pointer to the Record structure containing the updated data.
+ * @return RC Result code indicating the success or failure of the update operation.
+ */
+
+
+//getRecord 
+
+/**
+ * Retrieves a record from the specified table based on its ID.
+ * This function retrieves the record identified by the given ID from the table.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table.
+ * @param id The ID of the record to retrieve.
+ * @param record Pointer to the Record structure to populate with the retrieved data.
+ * @return RC Result code indicating the success or failure of the retrieval operation.
+ */
+
+
+// scans
+
+//startScan 
+
+/**
+ * Initializes a scan based on the specified parameters.
+ * This function sets up a scan operation on the given table with the provided scan handle and optional condition.
+ *
+ * @param rel Pointer to the RM_TableData structure representing the table to scan.
+ * @param scan Pointer to the RM_ScanHandle structure to initialize for the scan.
+ * @param cond Pointer to the Expr structure representing the optional condition for the scan.
+ * @return RC Result code indicating the success or failure of the scan initialization.
+ */
+
+//next
+
+/**
+ * Searches for the next tuple in the scan handle that satisfies the scan condition and returns it in the parameter "record".
+ * This function advances the scan operation to the next tuple that meets the specified condition.
+ *
+ * @param scan Pointer to the RM_ScanHandle structure representing the scan operation.
+ * @param record Pointer to the Record structure to populate with the next tuple.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+//closeScan 
+
+/**
+ * Function to close a scan handle.
+ * @param scan The scan handle to be closed.
+ * @return RC_OK on success, or an error code otherwise.
+ */
+
+// dealing with schemas
+
+//getRecordSize
+
+/**
+ * Retrieves the size of a record described by the provided schema.
+ * This function calculates the size of a record based on the layout defined by the schema.
+ *
+ * @param schema Pointer to the Schema structure describing the record's layout.
+ * @return int Size of the record described by the schema.
+ */
+
+//createSchema 
+
+/**
+ * Creates a new schema described by the provided parameters.
+ * This function initializes a new schema with the specified attributes, data types, lengths, key size, and keys.
+ *
+ * @param numAttr Number of attributes in the schema.
+ * @param attrNames Array of strings representing the names of attributes.
+ * @param dataTypes Array of DataType values representing the data types of attributes.
+ * @param typeLength Array of integers representing the lengths of data types.
+ * @param keySize Size of the key.
+ * @param keys Array of integers representing the keys.
+ * @return Schema The created schema.
+ */
+
+//freeSchema 
+
+/**
+ * Frees the memory space allocated for the provided schema.
+ * This function deallocates the memory space used by the schema.
+ *
+ * @param schema Pointer to the Schema structure to be freed.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+// dealing with records and attribute values
+
+//createRecord
+/**
+ * Creates a new record based on the provided schema.
+ * This function initializes a new record according to the layout defined by the schema.
+ *
+ * @param record Pointer to the Record structure to be created.
+ * @param schema Pointer to the Schema structure defining the record's layout.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+//freeRecord 
+/**
+ * Frees the memory space allocated for a record.
+ * This function deallocates the memory space used by the provided record.
+ *
+ * @param record Pointer to the Record structure to be freed.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+
+//getAttr 
+/**
+ * Retrieves the value of the specified attribute from a record.
+ * This function gets the value of the attribute identified by the attribute number from the provided record.
+ *
+ * @param record Pointer to the Record structure from which to retrieve the attribute value.
+ * @param schema Pointer to the Schema structure defining the record's layout.
+ * @param attrNum The number of the attribute to retrieve.
+ * @param value Pointer to a pointer to Value structure to store the retrieved value.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+//setAttr 
+/**
+ * Sets the value of the specified attribute in a record.
+ * This function updates the value of the attribute identified by the attribute number in the provided record.
+ *
+ * @param record Pointer to the Record structure in which to set the attribute value.
+ * @param schema Pointer to the Schema structure defining the record's layout.
+ * @param attrNum The number of the attribute to set.
+ * @param value Pointer to the Value structure containing the new value to set.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+
+// additional function
+
+//addPageMetadataBlock
+/**
+ * Adds a block containing pages metadata to the specified file handle.
+ * This function appends a block to the file to store metadata related to pages.
+ *
+ * @param fh Pointer to the SM_FileHandle structure representing the file handle.
+ * @return RC Result code indicating the success or failure of the operation.
+ */
+
+//getFileMetaDataSize
+/**
+ * Retrieves the size of file metadata from the file associated with the buffer pool.
+ * This function calculates and returns the size of metadata stored in the file.
+ *
+ * @param bm Pointer to the BM_BufferPool structure representing the buffer pool.
+ * @return int The size of file metadata.
+ */
+
+//recordCostSlot
+/**
+ * Retrieves the size of a record (in slots) from the file associated with the buffer pool.
+ * This function calculates and returns the size of a record in terms of slots.
+ *
+ * @param bm Pointer to the BM_BufferPool structure representing the buffer pool.
+ * @return int The size of a record in slots.
+ */
+
+//getSlotSize
+/**
+ * Retrieves the size of a slot from the file associated with the buffer pool.
+ * This function calculates and returns the size of a slot.
+ *
+ * @param bm Pointer to the BM_BufferPool structure representing the buffer pool.
+ * @return int The size of a slot.
+ */
+
+
+
+Buffer Manager
+
+initIndexManager // Initialize the index manager
+shutdownIndexManager // Shutdown the index manager
+
+createBtree // Create a B-tree
+openBtree // Open a B-tree
+closeBtree // close a B-tree
+deleteBtree // Delete a B-tree
+
+// access information about a b-tree
+getNumNodes  // Get the number of nodes in a B-tree
+getNumEntries // Get the number of entries in a B-tree
+getKeyType  // Get the key type of a B-tree (dummy function)
+
+// index access
+findKey  // Find a key in the B-tree
+insertKey  // Insert a key into the B-tree
+deleteKey  // Open a tree scan
+openTreeScan  // Get the next entry in the tree scan
+nextEntry  // Get the next entry in the tree scan
+// Close a tree scan
+closeTreeScan // Close a tree scan
+
+// debug and test functions
+extern char *printTree (BTreeHandle *tree);
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              5. Environment
+ The entire Code has been tested On MACOS and the test cases are successful
+
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

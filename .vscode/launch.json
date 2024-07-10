@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/saicharanreddyperla/Desktop/assign3",
+      "program": "/Users/saicharanreddyperla/Desktop/assign3/build/Debug/outDebug"
+    }
+  ]
+}
