@@ -1,71 +1,63 @@
 # Advanced Database Management System
 
-## 1. Introduction
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+![Platform](https://img.shields.io/badge/platform-macOS-lightgrey)
+
+## 🚀 Introduction
 This project provides a comprehensive set of functions for managing file blocks and buffer pools. It includes operations for reading, writing, and manipulating file data, as well as initializing and managing index structures like B-trees.
 
-## 2. Table of Contents
-- [1. Introduction](#1-introduction)
-- [2. Table of Contents](#2-table-of-contents)
-- [3. File Operations](#3-file-operations)
-  - [Read Operations](#read-operations)
-  - [Write Operations](#write-operations)
-- [4. Buffer Manager](#4-buffer-manager)
-- [5. Environment](#5-environment)
+## 📋 Table of Contents
+- [🚀 Introduction](#-introduction)
+- [📋 Table of Contents](#-table-of-contents)
+- [📂 Features](#-features)
+- [⚙️ Installation](#️-installation)
+- [📖 Usage](#-usage)
+- [🛠️ Development](#️-development)
+- [🤝 Contributors](#-contributors)
+- [📜 License](#-license)
 
-## 3. File Operations
+## 📂 Features
+- File operations: Read and write blocks of data.
+- Buffer management: Initialize and manage buffer pools.
+- B-tree operations: Create, open, close, and delete B-trees.
+- Debugging tools: Print B-tree structures for analysis.
 
-### Read Operations
+## ⚙️ Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/Database-System.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd Database-System
+   ```
+3. Build the project using the provided Makefile:
+   ```bash
+   make
+   ```
 
-#### 1. `readFirstBlock`
-Reads the first block of the file and stores it in the provided memory page buffer.
+## 📖 Usage
+Run the test cases to verify functionality:
+```bash
+./test_assign4_1
+./test_expr
+```
 
-#### 2. `readPreviousBlock`
-Reads the block immediately before the current block in the file, moving backward.
+## 🛠️ Development
+### File Operations
+- `readFirstBlock`: Reads the first block of the file.
+- `writeBlock`: Writes data to a specified page number.
 
-#### 3. `readCurrentBlock`
-Reads the current block from the file without changing the position.
-
-#### 4. `readNextBlock`
-Reads the block immediately after the current block in the file, moving forward.
-
-#### 5. `readLastBlock`
-Reads the last block of the file and stores it in the provided memory page buffer.
-
-### Write Operations
-
-#### 1. `writeBlock`
-Writes data from a memory page to a specified page number in the file.
-
-#### 2. `writeCurrentBlock`
-Writes data from a memory page to the current position in the file.
-
-## 4. Buffer Manager
-
-### Initialization and Shutdown
+### Buffer Manager
 - `initIndexManager`: Initialize the index manager.
-- `shutdownIndexManager`: Shutdown the index manager.
-
-### B-tree Operations
 - `createBtree`: Create a B-tree.
-- `openBtree`: Open a B-tree.
-- `closeBtree`: Close a B-tree.
-- `deleteBtree`: Delete a B-tree.
 
-### B-tree Information
-- `getNumNodes`: Get the number of nodes in a B-tree.
-- `getNumEntries`: Get the number of entries in a B-tree.
-- `getKeyType`: Get the key type of a B-tree (dummy function).
+### Debugging
+- `printTree`: Print the B-tree structure.
 
-### B-tree Access
-- `findKey`: Find a key in the B-tree.
-- `insertKey`: Insert a key into the B-tree.
-- `deleteKey`: Delete a key from the B-tree.
-- `openTreeScan`: Open a tree scan.
-- `nextEntry`: Get the next entry in the tree scan.
-- `closeTreeScan`: Close a tree scan.
+## 🤝 Contributors
+- **Sai Charan Reddy Perla** - Initial work
 
-### Debug and Test Functions
-- `printTree (BTreeHandle *tree)`: Print the B-tree structure.
-
-## 5. Environment
-The entire code has been tested on **macOS** and all test cases have been successful.
+## 📜 License
+This project is licensed under the MIT License. See the LICENSE file for details.

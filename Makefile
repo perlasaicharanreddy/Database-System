@@ -1,42 +1,33 @@
-all: test_assign4 test_expr
+# Updated Makefile to reflect new project structure
 
-test_assign4: test_assign4_1.o btree_mgr.o record_mgr.o rm_serializer.o expr.o storage_mgr.o dberror.o buffer_mgr_stat.o buffer_mgr.o
-	gcc test_assign4_1.o record_mgr.o btree_mgr.o rm_serializer.o expr.o storage_mgr.o dberror.o buffer_mgr_stat.o buffer_mgr.o -o test_assign4
+SRC_DIR = src
+TEST_DIR = tests
+BUILD_DIR = build
+INCLUDE_DIR = include
 
-test_expr: test_expr.o btree_mgr.o record_mgr.o rm_serializer.o expr.o storage_mgr.o dberror.o buffer_mgr_stat.o buffer_mgr.o
-	gcc test_expr.o btree_mgr.o record_mgr.o rm_serializer.o expr.o storage_mgr.o dberror.o buffer_mgr_stat.o buffer_mgr.o -o test_expr
-	rm -rf *o
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
+TEST_FILES = $(wildcard $(TEST_DIR)/*.c)
+OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 
-test_assign4_1.o: test_assign4_1.c
-	gcc -c test_assign4_1.c
+CC = gcc
+CFLAGS = -I$(INCLUDE_DIR) -Wall -g
+LDFLAGS =
 
-test_expr.o: test_expr.c
-	gcc -c test_expr.c
+all: $(BUILD_DIR)/main
 
-btree_mgr.o: btree_mgr.c
-	gcc -c btree_mgr.c
+$(BUILD_DIR)/main: $(OBJ_FILES)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-record_mgr.o: record_mgr.c
-	gcc -c record_mgr.c
-
-rm_serializer.o: rm_serializer.c
-	gcc -c rm_serializer.c
-
-expr.o: expr.c
-	gcc -c expr.c
-
-storage_mgr.o: storage_mgr.c
-	gcc -c storage_mgr.c
-
-dberror.o: dberror.c
-	gcc -c dberror.c
-
-buffer_mgr.o: buffer_mgr.c
-	gcc -c buffer_mgr.c
-
-buffer_mgr_stat.o: buffer_mgr_stat.c
-	gcc -c buffer_mgr_stat.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm test_assign4
-	rm test_expr
+	rm -rf $(BUILD_DIR)
+
+test: all
+	for test_file in $(TEST_FILES); do \
+		./$$test_file; \
+	done
+
+.PHONY: all clean test
